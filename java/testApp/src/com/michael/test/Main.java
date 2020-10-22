@@ -1,82 +1,70 @@
 package com.michael.test;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+class FastReader {
+    BufferedReader bufferedReader;
+    StringTokenizer stringTokenizer;
+    public FastReader() {
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    }
+
+    String next(){
+        while (stringTokenizer == null || !stringTokenizer.hasMoreTokens()){
+            try {
+                stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return stringTokenizer.nextToken();
+    }
+
+    int nextInt(){
+        return Integer.parseInt(next());
+    }
+
+    long nextLong(){
+        return Long.parseLong(next());
+    }
+}
 
 public class Main {
-
     public static void main(String[] args) {
-	// write your code here
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.next();
+        FastReader fastReader = new FastReader();
+        int N = fastReader.nextInt();
+        long W = fastReader.nextLong();
+        int V = 100000;
+        long[][] knap = new long[N+1][V+1];
 
-        boolean answer = false;
-        for (int i=0;i<s.length();i++) {
-            if (s.charAt(i) == 'A' || s.charAt(i) == 'B') {
-                if (i+1 == s.length()) {
-                    break;
-                }
-                if (s.charAt(i) == 'A' && s.charAt(i+1) == 'B') {
-                    if (i+2 < s.length()) {
-                        if (s.charAt(i+2)=='A') {
-                            if (i+3 == s.length()) {
-                                break;
-                            }
-                            answer = isBA(s.substring(i+3)) || isAB(s.substring(i+3));
-                        }
-                        else {
-                            answer = isBA(s.substring(i+2));
-                        }
-                        break;
-                    }
-                }
-                if (s.charAt(i) == 'B' && s.charAt(i+1) == 'A') {
-                    if (i+2 < s.length()) {
-                        if (s.charAt(i+2)=='B') {
-                            if (i+3 == s.length()) {
-                                break;
-                            }
-                            answer = isBA(s.substring(i+3)) || isAB(s.substring(i+3));
-                        }
-                        else {
-                            answer = isAB(s.substring(i+2));
-                        }
-                        break;
-                    }
-                }
+        for (int i=0;i<=N;i++){
+            for (int j=1;j<=V;j++){
+                knap[0][j] = 100000000000L;
             }
         }
-        if (answer) {
-            System.out.println("YES");
-        }
-        else {
-            System.out.println("NO");
-        }
-    }
 
-    private static boolean isAB(String s) {
-        for (int i=0;i<s.length();i++) {
-            if (s.charAt(i)=='A') {
-                if (i+1 == s.length()) {
-                    break;
-                }
-                if (s.charAt(i+1) == 'B') {
-                    return true;
-                }
+        for (int i=1;i<=N;i++){
+            long w = fastReader.nextLong();
+            int v = fastReader.nextInt();
+
+
+            for (int j=1;j<v;j++){
+                knap[i][j] = knap[i-1][j];
+            }
+            for (int j=v;j<=V;j++){
+                knap[i][j] = Math.min(knap[i-1][j], w+knap[i-1][j-v]);
             }
         }
-        return false;
-    }
-    private static boolean isBA(String s) {
-        for (int i=0;i<s.length();i++) {
-            if (s.charAt(i)=='B') {
-                if (i+1 == s.length()) {
-                    break;
-                }
-                if (s.charAt(i+1) == 'A') {
-                    return true;
-                }
+
+        for (int j=V;j>=0;j--){
+            if (knap[N][j] <= W){
+                System.out.println(j);
+                break;
             }
         }
-        return false;
+
     }
 }

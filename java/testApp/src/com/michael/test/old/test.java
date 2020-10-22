@@ -1,4 +1,4 @@
-package com.michael.test;
+package com.michael.test.old;
 
 /* Use the slash-star style comments or the system won't see your
    identification information */
