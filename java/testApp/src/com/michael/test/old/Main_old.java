@@ -3,7 +3,7 @@ package com.michael.test.old;
 import java.util.*;
 
 
-class Main {
+class Main_old {
     public static void main (String [] args) {
         Scanner scanner = new Scanner(System.in);
         int N = scanner.nextInt();
