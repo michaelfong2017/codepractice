@@ -119,41 +119,16 @@ import java.util.*;
 
 
 public class Main {
-    static class FastReader {
-        BufferedReader bufferedReader;
-        StringTokenizer stringTokenizer;
-        public FastReader() {
-            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        }
-
-        String next(){
-            while (stringTokenizer == null || !stringTokenizer.hasMoreTokens()){
-                try {
-                    stringTokenizer = new StringTokenizer(bufferedReader.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return stringTokenizer.nextToken();
-        }
-
-        int nextInt(){
-            return Integer.parseInt(next());
-        }
-
-        long nextLong(){
-            return Long.parseLong(next());
-        }
-    }
-
-    public static void main(String[] args) {
-        FastReader fastReader = new FastReader();
-        int T = fastReader.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+        int T = Integer.parseInt(stringTokenizer.nextToken());
 
         for (int i=0;i<T;i++) {
-            long a = fastReader.nextLong();
-            long l = fastReader.nextLong();
-            long r = fastReader.nextLong();
+            stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            long a = Long.parseLong(stringTokenizer.nextToken());
+            long l = Long.parseLong(stringTokenizer.nextToken());
+            long r = Long.parseLong(stringTokenizer.nextToken());
 
             long count=0;
 
@@ -167,21 +142,19 @@ public class Main {
             }
             if (l==r && a<l){
                 long x = l/a;
-                long start = x * a;
-                long end = x*a + Math.min(x, a) - 1;
-                if (end>=r & start<=l){
+                long end = x*a + Math.min(a, x) - 1;
+                if (end>=r){
                     count++;
                 }
             }
-            else if (l<a && a<r){
-                long x = l/a;
+            else if (l<=a && a<r){
                 long y = r/a;
 
                 if (y-1 <= a){
-                    count+= (x+y-1)*(y-x)/2;
+                    count+= (y-1)*y/2;
                 }
                 else{
-                    count+= (x+a)*(a-x+1)/2 + (y-1-a)*a;
+                    count+= a*(a+1)/2 + (y-1-a)*a;
                 }
 
                 long end = a*y + Math.min(a, y) - 1;
@@ -191,25 +164,7 @@ public class Main {
                 }
 
             }
-            else if (l==a && a<r){
-                long x = l/a;
-                long y = r/a;
 
-                if (y-1 <= a){
-                    count+= (x+y-1)*(y-x)/2;
-                }
-                else{
-                    count+= (x+a)*(a-x+1)/2 + (y-1-a)*a;
-                }
-
-
-                long start = a*y;
-                long end = a*y + Math.min(a, y) - 1;
-                count += r-a*y+1;
-                if (end < r){
-                    count -= r-end;
-                }
-            }
             else if (a<l && l<r){
                 long x = l/a;
                 long y = r/a;
